@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+    
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/profile_image"
+        android:src="@mipmap/ic_launcher"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toEndOf="@id/profile_image"
+        android:layout_marginStart="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/username"
+            android:text="username"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:textColor="@color/design_default_color_primary_dark"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fullname"
+            android:text="Full name"
+            android:layout_marginTop="5dp"
+            android:maxLines="1"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:text="FOLLOW"
+        android:background="@drawable/button"
+        android:id="@+id/follow_button"
+        android:visibility="gone"
+        android:textColor="@color/colorWhite"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"/>
+
+
+
+</RelativeLayout>

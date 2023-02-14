@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="Fragments.SearchFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Bar"
+        android:background="?android:attr/windowBackground">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Toolbar"
+        android:background="?android:attr/windowBackground">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search"/>
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:id="@+id/search_bar"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="10dp"
+            android:hint="search"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/RecyclerView_users"
+        android:layout_below="@id/Bar"
+        android:layout_marginTop="10dp"/>
+
+
+</RelativeLayout>
+
