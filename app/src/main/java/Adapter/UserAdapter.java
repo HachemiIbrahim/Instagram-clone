@@ -61,7 +61,24 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         if(user.getId().equals(firebaseUser.getUid())){
             holder.follow_btn.setVisibility(View.GONE);
         }
+        holder.follow_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.follow_btn.getText().toString().equals("follow")){
+                    FirebaseDatabase.getInstance().getReference().child("Follow")
+                            .child(firebaseUser.getUid()).child("Following").child(user.getId()).setValue(true);
 
+                    FirebaseDatabase.getInstance().getReference().child("Follow")
+                            .child(user.getId()).child("Followers").child(firebaseUser.getUid()).setValue(true);
+                }else {
+                    FirebaseDatabase.getInstance().getReference().child("Follow")
+                            .child(firebaseUser.getUid()).child("Following").child(user.getId()).removeValue();
+
+                    FirebaseDatabase.getInstance().getReference().child("Follow")
+                            .child(user.getId()).child("Followers").child(firebaseUser.getUid()).removeValue();
+                }
+            }
+        });
     }
 
     private void isFollowed(final String id,final Button follow_btn) {
@@ -71,9 +88,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(id).exists()){
-                    follow_btn.setText("FOLLOWING");
+                    follow_btn.setText("following");
                 }else {
-                    follow_btn.setText("FOLLOW");
+                    follow_btn.setText("follow");
                 }
             }
             @Override
