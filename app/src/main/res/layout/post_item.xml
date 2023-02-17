@@ -8,6 +8,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/more"
         android:src="@drawable/ic_more"
         android:layout_margin="15dp"
         android:layout_alignParentEnd="true"/>
@@ -26,18 +27,17 @@
                 android:id="@+id/image_profile"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@mipmap/ic_launcher"
                 android:layout_margin="5dp"/>
 
             <TextView
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Username"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:layout_margin="5dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:layout_margin="5dp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -80,13 +80,33 @@
                 android:layout_alignParentEnd="true"
                 android:id="@+id/save"/>
 
-
-
-
-
         </RelativeLayout>
 
-    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:id="@+id/nbr_likes"
+            android:textStyle="bold"
+            android:textColor="@color/common_google_signin_btn_text_light"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textStyle="bold"
+            android:id="@+id/author"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/nbr_comments"
+            android:textColor="@color/common_google_signin_btn_text_light"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
