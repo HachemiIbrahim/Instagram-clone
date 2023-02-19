@@ -33,10 +33,9 @@ public class HomeFragment extends Fragment {
 
     private List<String> followingList;
 
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view =inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerViewPosts = view.findViewById(R.id.recycler_view_post);
         recyclerViewPosts.setHasFixedSize(true);
@@ -47,56 +46,60 @@ public class HomeFragment extends Fragment {
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(), postList);
         recyclerViewPosts.setAdapter(postAdapter);
+
         followingList = new ArrayList<>();
-        checkFollowingList();
+
+        checkFollowingUsers();
 
         return view;
     }
 
-    private void checkFollowingList() {
 
-        FirebaseDatabase.getInstance().getReference().child("Follow").child(FirebaseAuth.getInstance().
-                getCurrentUser().getUid()).child("Following").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        followingList.clear();
-                        for(DataSnapshot snapshot1 : snapshot.getChildren()){
-                            followingList.add(snapshot1.getKey());
-                        }
-                        readPost();
+    private void checkFollowingUsers() {
 
-
-                    }
-
-            private void readPost() {
-                FirebaseDatabase.getInstance().getReference().child("Posts").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        postList.clear();
-                        for(DataSnapshot snapshot1 : snapshot.getChildren()){
-                            Post post = snapshot1.getValue(Post.class);
-
-                            for (String id : followingList){
-                                if(post.getPublisher().equals(id)){
-                                    postList.add(post);
-                                }
-                            }
-                        }
-                        postAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+        FirebaseDatabase.getInstance().getReference().child("Follow").child(FirebaseAuth.getInstance()
+                .getCurrentUser().getUid()).child("Following").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                followingList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    followingList.add(snapshot.getKey());
+                }
+                followingList.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                readPosts();
             }
 
             @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+            }
+        });
 
     }
-}
+    private void readPosts() {
+
+        FirebaseDatabase.getInstance().getReference().child("Posts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Post post = snapshot.getValue(Post.class);
+
+                    for (String id : followingList) {
+                        if (post.getPublisher().equals(id)){
+                            postList.add(post);
+                        }
+                    }
+                }
+                postAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    }

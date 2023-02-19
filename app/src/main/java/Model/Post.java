@@ -1,17 +1,20 @@
 package Model;
 
 public class Post {
+
     private String imageurl;
     private String postid;
     private String publisher;
 
-    public Post(){
+    public Post() {
     }
-    public Post(String imageurl ,String postid, String publisher){
+
+    public Post(String imageurl, String postid, String publisher) {
         this.imageurl = imageurl;
         this.postid = postid;
         this.publisher = publisher;
     }
+
     public String getImageurl() {
         return imageurl;
     }
@@ -35,5 +38,4 @@ public class Post {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
-
 }
