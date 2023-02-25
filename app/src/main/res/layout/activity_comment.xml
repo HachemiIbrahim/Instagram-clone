@@ -16,9 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recycler_view_comments"
-        android:layout_below="@id/Toolbar" />
+        android:layout_below="@id/Toolbar"
+        android:layout_above="@id/below"/>
 
     <RelativeLayout
+        android:id="@+id/below"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

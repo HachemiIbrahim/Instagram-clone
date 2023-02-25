@@ -1,12 +1,14 @@
 package Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.instagrameclone.CommentActivity;
 import com.example.instagrameclone.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,7 +71,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
         isLiked(post.getPostid(), holder.like);
         noOfLikes(post.getPostid(), holder.nbr_likes);
-
+        getComments(post.getPostid(), holder.nbr_comments);
 
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +83,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     FirebaseDatabase.getInstance().getReference().child("Likes")
                             .child(post.getPostid()).child(firebaseUser.getUid()).removeValue();
                 }
+            }
+        });
+
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, CommentActivity.class);
+                intent.putExtra("postId", post.getPostid());
+                intent.putExtra("authorId", post.getPublisher());
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.nbr_comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, CommentActivity.class);
+                intent.putExtra("postId", post.getPostid());
+                intent.putExtra("authorId", post.getPublisher());
+                mContext.startActivity(intent);
             }
         });
     }
@@ -122,6 +144,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         }
     }
+
+    private void getComments(String postId, TextView textView){
+        FirebaseDatabase.getInstance().getReference().child("Comments")
+                .child(postId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                textView.setText("View ALL "+snapshot.getChildrenCount()+" Comments");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void isLiked(String postId, final ImageView imageView) {
         FirebaseDatabase.getInstance().getReference().child("Likes").child(postId).addValueEventListener(new ValueEventListener() {
             @Override
