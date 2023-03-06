@@ -1,5 +1,6 @@
 package Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -50,7 +51,14 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
-        userId = fuser.getUid();
+
+        String data = getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).getString("publisherId", "none");
+
+        if(data.equals("none")) {
+            userId = fuser.getUid();
+        } else {
+            userId = data;
+        }
 
         imageProfile = view.findViewById(R.id.image_profile);
         options = view.findViewById(R.id.options);
@@ -66,6 +74,8 @@ public class ProfileFragment extends Fragment {
         userInfo();
         FollowingFollowersCount();
         postCount();
+
+
 
         return view;
     }
