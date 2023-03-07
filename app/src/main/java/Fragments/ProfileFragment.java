@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class ProfileFragment extends Fragment {
 
     private ImageButton myPictures;
     private ImageButton savedPictures;
+    private Button EditProfile;
 
     private FirebaseUser fuser;
     String userId;
@@ -70,14 +72,60 @@ public class ProfileFragment extends Fragment {
         bio = view.findViewById(R.id.bio);
         myPictures = view.findViewById(R.id.my_pictures);
         savedPictures = view.findViewById(R.id.saved_pictures);
+        EditProfile = view.findViewById(R.id.edit_profile);
 
         userInfo();
         FollowingFollowersCount();
         postCount();
 
+        if(userId.equals(fuser.getUid())){
+            EditProfile.setText("Edit Profile");
+        }else {
+            checkFollowing();
+        }
 
+        EditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = EditProfile.getText().toString();
+                if(text.equals("Edit Profile")){
+                    // add edit profile activity
+                } else {
+                    if (text.equals("follow")){
+                        FirebaseDatabase.getInstance().getReference().child("Follow").child(fuser.getUid())
+                                .child("Following").child(userId).setValue(true);
+                        FirebaseDatabase.getInstance().getReference().child("Follow").child(userId)
+                                .child("Followers").child(fuser.getUid()).setValue(true);
+                    }
+                    FirebaseDatabase.getInstance().getReference().child("Follow").child(fuser.getUid())
+                            .child("Following").child(userId).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child("Follow").child(userId)
+                            .child("Followers").child(fuser.getUid()).removeValue();
+                }
+            }
+        });
 
         return view;
+    }
+
+    private void checkFollowing() {
+
+        FirebaseDatabase.getInstance().getReference().child("Follow").child(fuser.getUid())
+                .child("Following").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(userId).exists()){
+                    EditProfile.setText("following");
+                } else{
+                    EditProfile.setText("follow");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void postCount() {
