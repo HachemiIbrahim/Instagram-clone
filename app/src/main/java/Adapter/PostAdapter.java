@@ -75,7 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         isLiked(post.getPostid(), holder.like);
         noOfLikes(post.getPostid(), holder.nbr_likes);
         getComments(post.getPostid(), holder.nbr_comments);
-
+        isSaved(post.getPostid(), holder.save);
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +108,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 mContext.startActivity(intent);
             }
         });
+
+        holder.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.save.getTag().equals("save")){
+                    FirebaseDatabase.getInstance().getReference().child("Saves")
+                            .child(firebaseUser.getUid()).child(post.getPostid()).setValue(true);
+                }else {
+                    FirebaseDatabase.getInstance().getReference().child("Saves")
+                            .child(firebaseUser.getUid()).child(post.getPostid()).removeValue();
+                }
+            }
+        });
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -181,6 +196,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
             }
         });
+    }
+    private void isSaved(String postid, ImageView imageView) {
+        FirebaseDatabase.getInstance().getReference().child("Saves").
+                child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.child(postid).exists()){
+                            imageView.setImageResource(R.drawable.ic_save_black);
+                            imageView.setTag("saved");
+                        }else {
+                            imageView.setImageResource(R.drawable.ic_save);
+                            imageView.setTag("save");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void noOfLikes (String postId, final TextView text) {

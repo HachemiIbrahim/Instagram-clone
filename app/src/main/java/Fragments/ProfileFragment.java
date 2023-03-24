@@ -38,6 +38,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
 
+    private RecyclerView recyclerViewSaves;
+    private PhotoAdapter photoAdapterSaves;
+    private List<Post> mySavedPosts;
     private RecyclerView recyclerView;
     private PhotoAdapter photoAdapter;
     private List<Post> myPhotoList;
@@ -84,6 +87,7 @@ public class ProfileFragment extends Fragment {
         myPictures = view.findViewById(R.id.my_pictures);
         savedPictures = view.findViewById(R.id.saved_pictures);
         EditProfile = view.findViewById(R.id.edit_profile);
+
         recyclerView = view.findViewById(R.id.recucler_view_pictures);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext() , 3));
@@ -91,10 +95,18 @@ public class ProfileFragment extends Fragment {
         photoAdapter = new PhotoAdapter(getContext() , myPhotoList);
         recyclerView.setAdapter(photoAdapter);
 
+        recyclerViewSaves = view.findViewById(R.id.recucler_view_saved);
+        recyclerViewSaves.setHasFixedSize(true);
+        recyclerViewSaves.setLayoutManager(new GridLayoutManager(getContext() , 3));
+        mySavedPosts = new ArrayList<>();
+        photoAdapterSaves = new PhotoAdapter(getContext() , mySavedPosts);
+        recyclerViewSaves.setAdapter(photoAdapterSaves);
+
         userInfo();
         FollowingFollowersCount();
         postCount();
         myPhotos();
+        getSavedPosts();
 
         if(userId.equals(fuser.getUid())){
             EditProfile.setText("Edit Profile");
@@ -123,7 +135,62 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        recyclerView.setVisibility(View.VISIBLE);
+        recyclerViewSaves.setVisibility(View.GONE);
+        myPictures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerViewSaves.setVisibility(View.GONE);
+            }
+        });
+        savedPictures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.setVisibility(View.GONE);
+                recyclerViewSaves.setVisibility(View.VISIBLE);
+            }
+        });
+
         return view;
+    }
+
+    private void getSavedPosts() {
+        List<String> savedIds = new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference().child("Saves")
+                .child(fuser.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            savedIds.add(snapshot.getKey());
+                        }
+                    FirebaseDatabase.getInstance().getReference().child("Posts").
+                            addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                            mySavedPosts.clear();
+                            for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()){
+                                Post post = snapshot1.getValue(Post.class);
+                                for(String id : savedIds){
+                                    if (post.getPostid().equals(id)){
+                                        mySavedPosts.add(post);
+                                    }
+                                }
+                            }
+                            photoAdapterSaves.notifyDataSetChanged();
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void myPhotos() {
