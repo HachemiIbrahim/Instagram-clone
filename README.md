@@ -13,3 +13,11 @@ To get started with the project, follow these steps:<br>
 The project was built using the following technologies:<br>
 1-java<br>
 2-firebase<br>
+
+<h1>Features</h1>
+The main features of the Instagram clone include:<br>
+User authentication<br>
+Uploading photos<br>
+Liking and commenting on posts<br>
+Following and unfollowing other users<br>
+A timeline displaying posts from users you follow<br>
