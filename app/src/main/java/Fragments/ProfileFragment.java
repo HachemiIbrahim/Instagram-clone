@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.instagrameclone.EditProfileActivity;
 import com.example.instagrameclone.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -119,7 +121,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 String text = EditProfile.getText().toString();
                 if(text.equals("Edit Profile")){
-                    // add edit profile activity
+                    startActivity(new Intent(getContext() , EditProfileActivity.class));
                 } else {
                     if (text.equals("follow")){
                         FirebaseDatabase.getInstance().getReference().child("Follow").child(fuser.getUid())
