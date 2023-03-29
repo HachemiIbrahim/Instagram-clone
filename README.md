@@ -20,4 +20,10 @@ User authentication<br>
 Uploading photos<br>
 Liking and commenting on posts<br>
 Following and unfollowing other users<br>
-A timeline displaying posts from users you follow<br>
+A timeline displaying posts from users you follow
+
+![](images/Capture%20d’écran%20(31).png)
+![](images/Capture%20d’écran%20(32).png)
+![](images/Capture%20d’écran%20(29).png)
+![](images/Capture%20d’écran%20(33).png)
+![](images/Capture%20d’écran%20(30).png)
