@@ -12,7 +12,8 @@ To get started with the project, follow these steps:<br>
 <h1>Technologies Used</h1>
 The project was built using the following technologies:<br>
 1-java<br>
-2-firebase<br>
+2-xml<br>
+3-firebase<br>
 
 <h1>Features</h1>
 The main features of the Instagram clone include:<br>
